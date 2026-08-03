@@ -1,0 +1,114 @@
+:root {
+  /* Core Dark Theme */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(25, 25, 25, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(12px);
+
+  /* Dynamic Event Theme Colors (Default: Neutral/Neon) */
+  --accent-color: #00f0ff;
+  --accent-glow: rgba(0, 240, 255, 0.3);
+  
+  /* Fluid Typography */
+  --font-small: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --font-base: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --font-large: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --font-heading: clamp(1.5rem, 1.25rem + 1.25vw, 2.5rem);
+  --font-hero: clamp(2.5rem, 2rem + 2.5vw, 4rem);
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+}
+
+/* F1 Theme Class */
+.theme-f1 {
+  --accent-color: #ff1801;
+  --accent-glow: rgba(255, 24, 1, 0.3);
+}
+
+/* Champions Theme Class */
+.theme-champions {
+  --accent-color: #002366;
+  --accent-glow: rgba(0, 35, 102, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Utility Classes */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.glow-text {
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 15px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.input-field {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  color: var(--text-primary);
+  font-size: var(--font-base);
+  width: 100%;
+  min-height: 44px;
+  transition: border-color 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}

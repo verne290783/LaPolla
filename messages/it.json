@@ -1,0 +1,47 @@
+{
+  "Login": {
+    "title": "La Polla",
+    "subtitle": "ELITE PREDICTION CLUB",
+    "google": "Continua con Google",
+    "emailLabel": "Email",
+    "emailPlaceholder": "tu@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "loginButton": "Accedi",
+    "forgotPassword": "Hai dimenticato la password?",
+    "emailSent": "Email di conferma inviata"
+  },
+  "Hub": {
+    "active": "In gioco",
+    "upcoming": "Prossimamente",
+    "f1": "Formula 1",
+    "champions": "Champions League",
+    "f1Subtitle": "RACING CLUB",
+    "championsSubtitle": "THE CHAMPIONS"
+  },
+  "Nav": {
+    "home": "Home",
+    "forecasts": "Pronostici",
+    "leaderboard": "Classifica",
+    "profile": "Profilo",
+    "rules": "Regole"
+  },
+  "Forecasts": {
+    "global": "Global",
+    "live": "Live",
+    "polePosition": "Pole Position",
+    "locked": "Bloccato",
+    "locksin": "Si blocca in"
+  },
+  "Leaderboard": {
+    "groups": "Gruppi",
+    "general": "Generale",
+    "rank": "Rank",
+    "user": "Utente",
+    "points": "Punti"
+  },
+  "Rules": {
+    "title": "Regole",
+    "poleNote": "Indovinare la Pole Position assegna gli stessi punti del vincitore di una Gara Sprint"
+  }
+}

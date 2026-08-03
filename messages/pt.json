@@ -1,0 +1,47 @@
+{
+  "Login": {
+    "title": "La Polla",
+    "subtitle": "ELITE PREDICTION CLUB",
+    "google": "Continuar com Google",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "voce@email.com",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "••••••••",
+    "loginButton": "Entrar",
+    "forgotPassword": "Esqueceu sua senha?",
+    "emailSent": "E-mail de confirmação enviado"
+  },
+  "Hub": {
+    "active": "Ao Vivo",
+    "upcoming": "Em breve",
+    "f1": "Fórmula 1",
+    "champions": "Champions League",
+    "f1Subtitle": "RACING CLUB",
+    "championsSubtitle": "THE CHAMPIONS"
+  },
+  "Nav": {
+    "home": "Início",
+    "forecasts": "Previsões",
+    "leaderboard": "Classificação",
+    "profile": "Perfil",
+    "rules": "Regras"
+  },
+  "Forecasts": {
+    "global": "Global",
+    "live": "Live",
+    "polePosition": "Pole Position",
+    "locked": "Bloqueado",
+    "locksin": "Bloqueia em"
+  },
+  "Leaderboard": {
+    "groups": "Grupos",
+    "general": "Geral",
+    "rank": "Rank",
+    "user": "Usuário",
+    "points": "Pontos"
+  },
+  "Rules": {
+    "title": "Regras",
+    "poleNote": "Acertar a Pole Position concede os mesmos pontos que vencer uma Corrida Sprint"
+  }
+}

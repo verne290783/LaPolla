@@ -1,0 +1,47 @@
+{
+  "Login": {
+    "title": "La Polla",
+    "subtitle": "ELITE PREDICTION CLUB",
+    "google": "Continue with Google",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "loginButton": "Sign In",
+    "forgotPassword": "Forgot your password?",
+    "emailSent": "Confirmation email sent"
+  },
+  "Hub": {
+    "active": "Live Now",
+    "upcoming": "Coming Soon",
+    "f1": "Formula 1",
+    "champions": "Champions League",
+    "f1Subtitle": "RACING CLUB",
+    "championsSubtitle": "THE CHAMPIONS"
+  },
+  "Nav": {
+    "home": "Home",
+    "forecasts": "Forecasts",
+    "leaderboard": "Leaderboard",
+    "profile": "Profile",
+    "rules": "Rules"
+  },
+  "Forecasts": {
+    "global": "Global",
+    "live": "Live",
+    "polePosition": "Pole Position",
+    "locked": "Locked",
+    "locksin": "Locks in"
+  },
+  "Leaderboard": {
+    "groups": "Groups",
+    "general": "General",
+    "rank": "Rank",
+    "user": "User",
+    "points": "Points"
+  },
+  "Rules": {
+    "title": "Rules",
+    "poleNote": "Correctly guessing the Pole Position grants the same points as winning a Sprint Race"
+  }
+}

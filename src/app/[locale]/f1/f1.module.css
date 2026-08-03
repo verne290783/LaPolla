@@ -1,0 +1,178 @@
+.container {
+  min-height: 100vh;
+  padding: var(--spacing-md);
+  padding-bottom: 100px; /* Safe space for bottom bar */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.backBtn {
+  color: var(--text-secondary);
+  font-weight: 600;
+  transition: color 0.3s;
+}
+.backBtn:hover {
+  color: var(--accent-color);
+}
+
+/* Segmented Control */
+.segmentedControl {
+  background: rgba(0,0,0,0.5);
+  border-radius: 12px;
+  display: flex;
+  padding: 4px;
+  margin: 0 auto var(--spacing-lg);
+  max-width: 400px;
+  border: 1px solid var(--glass-border);
+}
+
+.segmentBtn {
+  flex: 1;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  padding: 10px 0;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.activeSegment {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border: 1px solid var(--glass-border);
+}
+
+/* Timer */
+.timerBanner {
+  background: linear-gradient(90deg, rgba(255, 24, 1, 0.1) 0%, transparent 100%);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 0 8px 8px 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 600px;
+  margin: 0 auto var(--spacing-xl);
+}
+
+.timerIcon {
+  font-size: 2rem;
+}
+
+.timerLabel {
+  font-size: var(--font-small);
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.timerValue {
+  font-size: var(--font-large);
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Grids */
+.mainGrid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.poleCard {
+  padding: var(--spacing-md);
+  border: 1px solid var(--accent-color);
+  box-shadow: 0 0 20px rgba(255, 24, 1, 0.1);
+  background: linear-gradient(135deg, rgba(255, 24, 1, 0.05) 0%, rgba(0,0,0,0) 100%);
+}
+
+.poleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+.poleHeader h3 {
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.pointsBadge {
+  background: var(--accent-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: var(--font-small);
+  font-weight: bold;
+}
+
+.predictionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.predictionCard {
+  padding: var(--spacing-md);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.positionBadge {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: var(--font-small);
+}
+
+.slotEmpty {
+  width: 100%;
+  height: 120px;
+  border: 2px dashed var(--glass-border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--text-secondary);
+}
+
+.slotEmpty:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(255,255,255,0.05);
+}
+
+.plusIcon {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 600px) {
+  .predictionsGrid {
+    grid-template-columns: 1fr;
+  }
+}

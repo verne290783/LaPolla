@@ -1,0 +1,47 @@
+{
+  "Login": {
+    "title": "La Polla",
+    "subtitle": "ELITE PREDICTION CLUB",
+    "google": "Continuar con Google",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "••••••••",
+    "loginButton": "Iniciar Sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "emailSent": "Correo de confirmación enviado"
+  },
+  "Hub": {
+    "active": "En juego",
+    "upcoming": "Próximamente",
+    "f1": "Fórmula 1",
+    "champions": "Champions League",
+    "f1Subtitle": "RACING CLUB",
+    "championsSubtitle": "THE CHAMPIONS"
+  },
+  "Nav": {
+    "home": "Inicio",
+    "forecasts": "Pronósticos",
+    "leaderboard": "Clasificación",
+    "profile": "Perfil",
+    "rules": "Reglas"
+  },
+  "Forecasts": {
+    "global": "Global",
+    "live": "Live",
+    "polePosition": "Pole Position",
+    "locked": "Bloqueado",
+    "locksin": "Se bloquea en"
+  },
+  "Leaderboard": {
+    "groups": "Grupos",
+    "general": "General",
+    "rank": "Rank",
+    "user": "Usuario",
+    "points": "Puntos"
+  },
+  "Rules": {
+    "title": "Reglas",
+    "poleNote": "El acierto de la Pole Position otorga los mismos puntos que gana el primer lugar en una Carrera Sprint"
+  }
+}

@@ -1,0 +1,102 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0a 100%);
+  padding: var(--spacing-md);
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 400px;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.header h1 {
+  font-size: var(--font-hero);
+  margin-bottom: 0;
+  letter-spacing: 2px;
+}
+
+.header p {
+  color: var(--text-secondary);
+  font-size: var(--font-small);
+  letter-spacing: 4px;
+}
+
+.googleBtn {
+  background-color: #ffffff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.divider {
+  text-align: center;
+  color: var(--text-secondary);
+  position: relative;
+  margin: var(--spacing-md) 0;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background: var(--glass-border);
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.submitBtn {
+  margin-top: var(--spacing-md);
+}
+
+.forgot {
+  text-align: center;
+  font-size: var(--font-small);
+  color: var(--text-secondary);
+  margin-top: var(--spacing-sm);
+  transition: color 0.3s ease;
+}
+
+.forgot:hover {
+  color: var(--accent-color);
+}
+
+.langWrapper {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+}
+
+.successState {
+  text-align: center;
+  padding: var(--spacing-xl) 0;
+}
+
+.checkIcon {
+  font-size: 4rem;
+  color: var(--accent-color);
+  margin-bottom: var(--spacing-md);
+  text-shadow: 0 0 20px var(--accent-glow);
+}
