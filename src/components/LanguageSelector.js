@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
+import { usePathname, useRouter } from '@/i18n/navigation';
 
 export default function LanguageSelector() {
   const locale = useLocale();
@@ -10,8 +10,7 @@ export default function LanguageSelector() {
 
   const handleLanguageChange = (e) => {
     const nextLocale = e.target.value;
-    const pathWithoutLocale = pathname.replace(`/${locale}`, '');
-    router.push(`/${nextLocale}${pathWithoutLocale}`);
+    router.replace(pathname, { locale: nextLocale });
   };
 
   return (

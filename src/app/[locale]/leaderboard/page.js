@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import styles from './leaderboard.module.css';
 
 export default function LeaderboardPage() {

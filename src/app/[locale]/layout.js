@@ -18,7 +18,17 @@ export const metadata = {
   description: "Premium Multi-Event Predictions",
 };
 
-export default async function RootLayout({ children, params: { locale } }) {
+export function generateStaticParams() {
+  return [
+    { locale: 'es' },
+    { locale: 'en' },
+    { locale: 'it' },
+    { locale: 'pt' }
+  ];
+}
+
+export default async function RootLayout({ children, params }) {
+  const { locale } = await params;
   const messages = await getMessages();
   
   return (
