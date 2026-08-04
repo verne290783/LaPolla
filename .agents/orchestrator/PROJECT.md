@@ -1,47 +1,39 @@
-# Project: La Polla Next.js 16 + next-intl Vercel Deployment & Playwright E2E
+# Project: La Polla - Next.js 16 Middleware & Vercel Fix
 
 ## Architecture
-- Framework: Next.js 16.2.12 App Router (React 19)
-- Internationalization: next-intl 4.13.4 with middleware/proxy locale routing (es, en, it, pt)
-- Backend / Database: Supabase (`@supabase/supabase-js`)
-- E2E Testing: Playwright (`@playwright/test`)
-- Target Deployment: Vercel
+- Next.js 16.2.12 App Router (`src/app/[locale]/...`)
+- `next-intl` 4.13.4 for internationalization routing (`es`, `en`, `it`, `pt`)
+- `proxy.js` standard Next.js 16 request routing handler (`src/proxy.js`)
+- Playwright E2E test runner (`playwright.config.ts`, `tests/e2e/`)
 
 ## Feature Inventory
 | # | Feature | Description | Milestone | Source |
 |---|---------|-------------|-----------|--------|
-| 1 | Middleware / Proxy Locale Routing | Fix middleware matcher regex and proxy configuration for un-prefixed routes (`/`, `/login`, `/hub`, etc.) | M1 | R1, R2 |
-| 2 | App Router & Page Layout Fixes | Add `src/app/[locale]/login/page.js`, add root `src/app/page.js` redirect, await `params` in layout.js, add `generateStaticParams()` | M1 | R1, R2 |
-| 3 | i18n Navigation & Links | Configure `routing.js`, `navigation.js`, and update components to use locale-aware navigation | M1 | R1, R2 |
-| 4 | Playwright Test Harness & Config | Add `@playwright/test`, `playwright.config.ts`, `npm run test:e2e` script | M2 | R3 |
-| 5 | E2E Test Suite (Tiers 1-4) | Write Playwright tests verifying root redirect, `/es/login`, routing, locale switching, and user scenarios | M2 | R3 |
-| 6 | Production Build & E2E Validation | Run `npm run build && npm run start` and `npx playwright test` passing 100% | M3 | Acceptance Criteria |
+| 1 | Middleware Conflict Resolution | Eliminate duplicate `src/middleware.js`, use sole `src/proxy.js` handler | M1 | Survey |
+| 2 | Next.js 16 Routing & Build Compliance | Ensure `npm run build` exits 0 with zero compilation/middleware errors | M1 | Survey |
+| 3 | Root Redirection & Locale Routing | `/` redirects to `/es`, all locale routes return 200 OK without 404 | M1 | Survey |
+| 4 | Playwright E2E Test Infra | Setup `@playwright/test` and `playwright.config.ts` targeting local prod server | M2 | Survey |
+| 5 | E2E Test Verification | Run Playwright test suite against production build ensuring 100% pass rate | M2 | Survey |
 
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
-| 1 | M1: Next.js 16 & i18n Fixes | Fix middleware matcher / proxy.js, add missing `/es/login` page, root page redirect, async `params` in RootLayout, and `generateStaticParams()` | none | DONE |
-| 2 | M2: E2E Test Suite Creation | Install Playwright, configure `playwright.config.ts`, write Tiers 1-4 E2E test specs | M1 | DONE |
-| 3 | M3: Final E2E Validation & Hardening | Run local production server, execute 100% passing Playwright tests, adversarial hardening | M1, M2 | DONE |
+| M1 | Middleware Cleanup & Next.js 16 Build Fix | Delete `src/middleware.js`, standardize `src/proxy.js`, fix Next.js 16 async params in layout if needed, verify `npm run build` exit code 0 | None | DONE |
+| M2 | Playwright E2E Test Suite & Prod Pass | Install `@playwright/test`, write E2E tests for routing/pages, run `npx playwright test` on production build | M1 | DONE |
 
 ## Interface Contracts
-### Middleware / Proxy ↔ App Router
-- Matcher: `['/((?!api|_next|_vercel|.*\\..*).*)']`
-- Locales: `['es', 'en', 'it', 'pt']`, Default: `'es'`
-- Root `/` redirect: 307 to `/[locale]` (`/es`)
-- Un-prefixed routes (e.g. `/login`): 307 redirect to `/es/login`
+### `src/proxy.js`
+- Export default: `createMiddleware(routing)` from `next-intl/middleware`
+- Export config: `matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']`
+- File location: `src/proxy.js` ONLY (`src/middleware.js` MUST NOT EXIST)
 
-### Layout ↔ Page Params (Next.js 16)
-- `RootLayout`: `export default async function RootLayout({ children, params }) { const { locale } = await params; ... }`
-- Static Params: `export function generateStaticParams() { return [{ locale: 'es' }, { locale: 'en' }, { locale: 'it' }, { locale: 'pt' }]; }`
+### `src/app/[locale]/layout.js`
+- Function signature: `export default async function RootLayout({ children, params })`
+- `params` MUST be awaited before destructuring: `const { locale } = await params;`
 
 ## Code Layout
-- `src/middleware.js` / `src/proxy.js`: Locale routing middleware
-- `src/i18n/routing.js`: next-intl routing configuration
-- `src/i18n/navigation.js`: next-intl navigation hooks and Link component
-- `src/app/page.js`: Root redirect fallback to `/es`
-- `src/app/[locale]/layout.js`: Root locale layout
-- `src/app/[locale]/page.js`: Locale landing / login page
-- `src/app/[locale]/login/page.js`: Locale login page (`/es/login`)
-- `playwright.config.ts`: Playwright E2E configuration
-- `tests/e2e/`: E2E test suite specs
+- `src/proxy.js`: Standard Next.js 16 request interceptor handler
+- `src/app/[locale]/`: App router pages (`page.js`, `layout.js`, `hub/page.js`, `f1/page.js`, etc.)
+- `src/i18n/`: `routing.js`, `request.js`
+- `tests/e2e/`: Playwright E2E spec files (`routing.spec.ts`, `app.spec.ts`)
+- `playwright.config.ts`: Playwright configuration for production build testing

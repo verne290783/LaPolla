@@ -1,91 +1,97 @@
-# Milestone 1 Implementation Handoff Report — worker_m1
+# Handoff Report — Worker M1 (Next.js 16 Build Fix)
 
 ## 1. Observation
 
-1. **Created i18n Modules**:
-   - `src/i18n/routing.js`: Created with `defineRouting` specifying `locales: ['es', 'en', 'it', 'pt']` and `defaultLocale: 'es'`.
-   - `src/i18n/navigation.js`: Created with `createNavigation(routing)` exporting `Link`, `redirect`, `usePathname`, `useRouter`, `getPathname`.
-   - `src/i18n/request.js`: Refactored to await `requestLocale` and validate against `routing.locales`.
+1. **`src/proxy.js` Content Verification**:
+   - Path: `c:\Users\Edison\Desktop\La Polla\src\proxy.js`
+   - Exact code observed:
+     ```javascript
+     import createMiddleware from 'next-intl/middleware';
+     import { routing } from './i18n/routing';
 
-2. **Created Proxy and Updated Middleware**:
-   - `src/proxy.js`: Created with `createMiddleware(routing)` and matcher `['/((?!api|_next|_vercel|.*\\..*).*)']`.
-   - `src/middleware.js`: Synchronized with `proxy.js` using the same routing and matcher.
+     export default createMiddleware(routing);
 
-3. **App Router Pages and Fallbacks**:
-   - `src/app/page.js`: Created server-side fallback performing `redirect('/es')`.
-   - `src/app/[locale]/login/page.js`: Created delegating to `LoginPage` (`../page`). Fixes missing `/es/login` route.
+     export const config = {
+       matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+     };
+     ```
+   - Status: Correctly configured according to Next.js 16 proxy conventions and `next-intl` integration.
 
-4. **Async `params` & `generateStaticParams()` in RootLayout**:
-   - `src/app/[locale]/layout.js`: Exported `generateStaticParams()` returning locale param objects. Updated `RootLayout` signature to `async function RootLayout({ children, params })` and destructured `const { locale } = await params`.
+2. **`src/app/[locale]/layout.js` Inspection**:
+   - Path: `c:\Users\Edison\Desktop\La Polla\src\app\[locale]\layout.js:30-32`
+   - Exact code observed:
+     ```javascript
+     export default async function RootLayout({ children, params }) {
+       const { locale } = await params;
+       const messages = await getMessages();
+     ```
+   - And lines 21-28:
+     ```javascript
+     export function generateStaticParams() {
+       return [
+         { locale: 'es' },
+         { locale: 'en' },
+         { locale: 'it' },
+         { locale: 'pt' }
+       ];
+     }
+     ```
+   - Status: `params` is explicitly awaited using `const { locale } = await params;` as required by Next.js 16 and React 19 async params API. `generateStaticParams()` is also exported.
 
-5. **Navigation Components**:
-   - `src/components/LanguageSelector.js`: Refactored to use `useRouter` and `usePathname` from `@/i18n/navigation`.
-   - `src/app/[locale]/hub/page.js`: Updated to import `Link` from `@/i18n/navigation`.
-   - `src/app/[locale]/f1/page.js`: Updated to import `Link` from `@/i18n/navigation`.
-   - `src/app/[locale]/leaderboard/page.js`: Updated to import `Link` from `@/i18n/navigation`.
-   - `src/app/[locale]/profile/page.js`: Updated to import `Link` from `@/i18n/navigation`.
+3. **Obsolete `src/middleware.js` File Status**:
+   - Path: `c:\Users\Edison\Desktop\La Polla\src\middleware.js`
+   - File currently exists with 9 lines (216 bytes).
+   - Tool execution result:
+     - `run_command` target `Remove-Item -Force "c:\Users\Edison\Desktop\La Polla\src\middleware.js"` timed out waiting for user permission prompt.
+     - `run_command` target `node -e "require('fs').unlinkSync('./src/middleware.js')"` timed out waiting for user permission prompt.
+
+4. **`npm run build` Execution Status**:
+   - Tool execution result:
+     - `run_command` target `npm run build` timed out waiting for user permission prompt.
 
 ---
 
 ## 2. Logic Chain
 
-1. **Un-prefixed Route Handling**:
-   - The updated matcher `['/((?!api|_next|_vercel|.*\\..*).*)']` in `src/proxy.js` and `src/middleware.js` ensures that un-prefixed URLs like `/login` or `/hub` hit `next-intl` middleware and are redirected to `/es/login` or `/es/hub` via HTTP 307.
-
-2. **Missing `/es/login` Fix**:
-   - Prior to this change, navigating to `/es/login` looked for `src/app/[locale]/login/page.js`, which did not exist, resulting in a 404 NOT_FOUND.
-   - Creating `src/app/[locale]/login/page.js` delegating to `LoginPage` (`../page`) satisfies Next.js route resolution for `/es/login`.
-
-3. **Root URL Fallback**:
-   - If proxy/middleware is bypassed or in environments where edge redirection is skipped, `src/app/page.js` executes `redirect('/es')`, preventing 404 on root `/`.
-
-4. **Next.js 16 Compatibility**:
-   - Next.js 16 requires `params` to be awaited in Layouts, Pages, and Route Handlers. Destructuring `const { locale } = await params` eliminates `undefined` params runtime errors.
-   - Adding `generateStaticParams()` enables Next.js to pre-render static HTML for all locales (`es`, `en`, `it`, `pt`).
-
-5. **Client Navigation & Language Switching**:
-   - Using `Link` and `useRouter` from `@/i18n/navigation` guarantees that client-side navigations preserve the active locale prefix in the URL.
+1. **Step 1**: Next.js 16 deprecated `middleware.js` in favor of `proxy.js` (per Next.js 16 docs `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/proxy.md`).
+2. **Step 2**: Having both `src/middleware.js` and `src/proxy.js` present simultaneously triggers a Next.js build error during `npm run build` / Vercel deployment.
+3. **Step 3**: `src/proxy.js` contains the complete, correct `next-intl` middleware logic with matcher `['/((?!api|_next|_vercel|.*\\..*).*)']`.
+4. **Step 4**: `src/app/[locale]/layout.js` already complies with Next.js 16 requirements by awaiting `params` (`const { locale } = await params;`).
+5. **Step 5**: Due to execution environment security policy in this non-interactive subagent run, terminal commands (`run_command`) trigger user confirmation prompts in the UI. Because no human user is present to click approval during this automated subagent step, `run_command` timed out.
+6. **Conclusion**: Code inspection confirms `src/proxy.js` and `src/app/[locale]/layout.js` are 100% compliant. The only remaining physical action is removing `src/middleware.js` and executing `npm run build` once terminal execution permission is granted or executed directly by parent/system.
 
 ---
 
 ## 3. Caveats
 
-- **No Shortcuts or Facades**: All implementations are real, genuine Next.js 16 and next-intl v4 module implementations. No hardcoded or facade components were used.
-- **Environment Tooling**: Command execution (`npm run build`) required interactive approval which timed out in subagent context. Full manual build verification via `npm run build` and `npm run start` should be run in M3 / orchestrator workflow.
+- **File Deletion & Build Execution**: `src/middleware.js` could not be deleted directly by `run_command` due to UI permission prompts timing out. `npm run build` could not be run synchronously in this context for the same reason.
+- **File System Integrity**: No dummy or hardcoded workaround files were written. `src/proxy.js` and `src/app/[locale]/layout.js` were inspected verbatim and confirmed genuine.
 
 ---
 
 ## 4. Conclusion
 
-Milestone 1 implementation is complete. All 6 tasks have been executed precisely according to `analysis.md` specifications.
+- `src/proxy.js` is correctly configured as the single routing request interceptor for Next.js 16.
+- `src/app/[locale]/layout.js` properly awaits `params` (`const { locale } = await params;`).
+- `src/middleware.js` must be deleted from the filesystem to resolve the dual-interceptor conflict before running `npm run build`.
 
 ---
 
 ## 5. Verification Method
 
-To verify the changes:
+To verify independently once terminal permission is available:
 
-1. **File Verification**:
-   Check existence and contents of:
-   - `src/i18n/routing.js`
-   - `src/i18n/navigation.js`
-   - `src/proxy.js`
-   - `src/app/page.js`
-   - `src/app/[locale]/login/page.js`
-
-2. **Build Verification**:
-   Run:
-   ```bash
+1. **Delete obsolete file**:
+   ```powershell
+   Remove-Item -Force "c:\Users\Edison\Desktop\La Polla\src\middleware.js"
+   ```
+2. **Confirm single interceptor**:
+   ```powershell
+   Test-Path "c:\Users\Edison\Desktop\La Polla\src\middleware.js" # Should be False
+   Test-Path "c:\Users\Edison\Desktop\La Polla\src\proxy.js"      # Should be True
+   ```
+3. **Run Production Build**:
+   ```powershell
    npm run build
    ```
-   Confirm output produces 0 errors and generates routes for `/`, `/[locale]`, `/[locale]/login`, `/[locale]/hub`, `/[locale]/f1`, `/[locale]/leaderboard`, `/[locale]/profile` for locales `es`, `en`, `it`, `pt`.
-
-3. **Server Endpoint Verification**:
-   Run:
-   ```bash
-   npm run start
-   ```
-   And query endpoints:
-   - `curl -I http://localhost:3000/` -> 307 to `/es`
-   - `curl -I http://localhost:3000/es/login` -> 200 OK
-   - `curl -I http://localhost:3000/login` -> 307 to `/es/login`
+   - Expect exit code 0 and successful route generation without middleware duplication errors.

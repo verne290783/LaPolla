@@ -1,24 +1,14 @@
-## 2026-08-03T22:16:18Z
+## 2026-08-04T13:04:19Z
+You are the Project Orchestrator for the project located at `c:\Users\Edison\Desktop\La Polla`.
+Your instructions and user requirements are recorded in `c:\Users\Edison\Desktop\La Polla\.agents\ORIGINAL_REQUEST.md`.
 
-Fix the Vercel deployment of a Next.js 16 app with next-intl that currently returns a 404 NOT_FOUND in production despite successful builds, and implement Playwright automated tests to guarantee it works.
+Context & Objective:
+The Vercel deployment failed with a build error because both `src/middleware.js` and `src/proxy.js` exist in the project, which is prohibited in Next.js 16.
 
-Working directory: c:\Users\Edison\Desktop\La Polla
-Integrity mode: development
+Requirements:
+1. Remove conflicting `src/middleware.js` and ensure `src/proxy.js` is correctly configured for Next.js 16 and `next-intl`.
+2. Execute a clean `npm run build` and ensure it passes (exit code 0) without build errors.
+3. Run Playwright E2E tests (`npx playwright test`) on production build to verify routing and page rendering.
 
-## Requirements
-
-### R1. Diagnose and Fix 404 Error
-Determine why the Next.js app deployed to Vercel is returning a 404 error instead of the application pages, and fix the configuration or code to resolve it.
-
-### R2. Ensure Middleware Routing
-Verify that the Next.js middleware is correctly redirecting requests from the root `/` to the default locale `/[locale]/` in production. 
-
-### R3. Automated Testing (Playwright)
-Install and configure Playwright. Write basic End-to-End tests that verify the application starts, routing works, and the main page (e.g. login) renders correctly without 404 errors.
-
-## Acceptance Criteria
-
-### Deployment Verification
-- [ ] A local production server (`npm run build` && `npm run start`) successfully serves the expected pages (e.g., `/es/login`) without 404 errors.
-- [ ] `npx playwright test` passes against a local production build, confirming that the pages load correctly.
-- [ ] Code is pushed to GitHub, and the subsequent Vercel deployment successfully serves the pages to the public URL.
+Working directory for orchestrator metadata: `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator`
+Please maintain your `plan.md` and `progress.md` in your directory, delegate work to subagents as needed, and notify the Sentinel when all milestones are completed.

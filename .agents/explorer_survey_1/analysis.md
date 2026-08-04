@@ -1,123 +1,125 @@
-# Survey Phase Analysis Report — Codebase & Vercel Config Explorer
+# Next.js 16 Middleware & Proxy Resolution Analysis Report
 
 ## Executive Summary
-This analysis investigates the configuration, route layout, dependencies, and Next.js 16 documentation to identify the root cause of the 404 NOT_FOUND error occurring on Vercel deployments. The primary issue is a incompatibility between Next.js 16 breaking changes (where `middleware.js` is deprecated and renamed to `proxy.js`) and the project's current middleware setup (`src/middleware.js`), compounded by the lack of a root page fallback redirect (`src/app/page.js`) when accessing `/`.
+This report analyzes the build error and Vercel deployment failure in the application (`temp-app` v0.1.0 using `next@16.2.12` and `next-intl@4.13.4`). The primary root cause of the build failure is the simultaneous existence of both `src/middleware.js` and `src/proxy.js`. In Next.js 16, the `middleware` file convention is deprecated and renamed to `proxy`. Next.js 16 strictly forbids having both `middleware` and `proxy` files in the workspace, triggering a fatal build error during `npm run build` (`next build`).
 
 ---
 
-## 1. Project Configuration & File Layout
+## 1. Codebase Inventory of Middleware and Proxy Files
 
-### 1.1 Dependency & Version Inventory (`package.json`)
-- **Next.js**: `16.2.12` (`package.json:13`)
-- **next-intl**: `^4.13.4` (`package.json:14`)
-- **React / React-DOM**: `19.2.4` (`package.json:15-16`)
-- **@supabase/supabase-js**: `^2.112.0` (`package.json:12`)
-- **ESLint / Config**: `^9` / `16.2.12` (`package.json:19-20`)
+A full scan of the codebase (`c:\Users\Edison\Desktop\La Polla`) for files matching `middleware*` or `proxy*` yielded the following:
 
-### 1.2 Configuration Files
-- `next.config.mjs`:
-  ```javascript
-  import createNextIntlPlugin from 'next-intl/plugin';
-  const withNextIntl = createNextIntlPlugin();
-  const nextConfig = {};
-  export default withNextIntl(nextConfig);
-  ```
-  - Located at project root (`next.config.mjs:1-9`).
-- `jsconfig.json`: Alias `@/*` mapped to `./src/*` (`jsconfig.json:4`).
-- `vercel.json`: **NOT PRESENT** in project root or subdirectories.
+1. **`src/middleware.js`**
+   - Absolute Path: `c:\Users\Edison\Desktop\La Polla\src\middleware.js`
+   - File Size: 216 bytes (9 lines)
+   - Status: Obsolete file convention in Next.js 16; causing build conflict.
 
-### 1.3 Project Directory Layout & App Router Routes
-The application uses App Router under `src/app`:
-```
-src/
-├── app/
-│   ├── [locale]/
-│   │   ├── f1/
-│   │   │   ├── f1.module.css
-│   │   │   └── page.js
-│   │   ├── hub/
-│   │   │   ├── hub.module.css
-│   │   │   └── page.js
-│   │   ├── leaderboard/
-│   │   │   ├── leaderboard.module.css
-│   │   │   └── page.js
-│   │   ├── profile/
-│   │   │   ├── page.js
-│   │   │   └── profile.module.css
-│   │   ├── layout.js
-│   │   └── page.js              <-- Login page component
-│   ├── favicon.ico
-│   ├── globals.css
-│   └── page.module.css
-├── components/
-│   ├── LanguageSelector.js
-│   ├── LoginForm.js
-│   └── login.module.css
-├── i18n/
-│   └── request.js
-└── middleware.js               <-- Legacy middleware naming
+2. **`src/proxy.js`**
+   - Absolute Path: `c:\Users\Edison\Desktop\La Polla\src\proxy.js`
+   - File Size: 216 bytes (9 lines)
+   - Status: Standard Next.js 16 routing interceptor convention.
+
+No other `middleware.ts`, `middleware.js`, `proxy.ts`, or `proxy.js` files exist in the root directory or subdirectories.
+
+---
+
+## 2. File Content Analysis & `next-intl` Integration
+
+Both `src/middleware.js` and `src/proxy.js` contain **identical** code:
+
+```javascript
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
+
+export default createMiddleware(routing);
+
+export const config = {
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+};
 ```
 
----
+### Breakdown of Imports, Export, and Matcher
 
-## 2. Root Cause Analysis of 404 NOT_FOUND on Vercel
+1. **`next-intl` Import**:
+   - `import createMiddleware from 'next-intl/middleware';`
+   - `createMiddleware` is a factory function provided by `next-intl` that takes routing configuration and returns a standard Next.js request handler `(request: NextRequest) => NextResponse`.
 
-### Primary Cause: Next.js 16 `middleware` Deprecation and Renaming to `proxy`
-- **Evidence**:
-  In `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/proxy.md`:
-  - **Line 11**: `> **Note**: The middleware file convention is deprecated and has been renamed to proxy.`
-  - **Line 773**: `v16.0.0: Middleware is deprecated and renamed to Proxy. Proxy defaults to the Node.js runtime.`
-  - **Line 763**: `middleware.ts -> proxy.ts` / `middleware.js -> proxy.js`
-- **Impact**:
-  The project currently names the file `src/middleware.js` (`src/middleware.js:1-11`) exporting `default createMiddleware(...)`. In Next.js 16, Next.js expects `src/proxy.js` (or `proxy.js`) exporting a `proxy` function or default `proxy`. As a result, `src/middleware.js` is not recognized or executed by Next.js 16 in Vercel production deployment.
-
-### Secondary Cause: Absence of Root `src/app/page.js` Route Handler
-- **Evidence**:
-  `src/app/` contains `[locale]/`, but does **NOT** contain `src/app/page.js`.
-- **Impact**:
-  When a user requests the root URL `/` on Vercel:
-  1. Without active proxy execution (due to the `middleware.js` vs `proxy.js` mismatch), Next.js attempts to serve the root route `/` directly from `src/app/`.
-  2. Because there is no `src/app/page.js`, Next.js cannot find a matching route segment and returns `404 NOT_FOUND`.
-
-### Tertiary Cause: Synchronous `params` Access in `src/app/[locale]/layout.js`
-- **Evidence**:
-  In `src/app/[locale]/layout.js` (line 21):
-  `export default async function RootLayout({ children, params: { locale } })`
-- **Impact**:
-  In Next.js 16 (as documented in `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/layout.md`, lines 60-90), `params` is a `Promise`. Synchronous destructuring of `params: { locale }` in function arguments will yield `undefined` for `locale` during Server Component rendering or build.
-
----
-
-## 3. Next.js 16 Breaking Changes & Conventions Summary
-
-From official documentation in `node_modules/next/dist/docs/`:
-
-1. **Middleware -> Proxy Migration**:
-   - File location: `src/proxy.js` (or `proxy.js` at root).
-   - Function export: `export function proxy(request) { ... }` or `export default function proxy(request) { ... }`.
-   - Codemod: `npx @next/codemod@canary middleware-to-proxy .`
-2. **Async `params` in App Router**:
-   - `params` in `layout.js` and `page.js` is a `Promise`:
+2. **Routing Configuration**:
+   - `import { routing } from './i18n/routing';`
+   - Located at `src/i18n/routing.js`:
      ```javascript
-     export default async function RootLayout({ children, params }) {
-       const { locale } = await params;
-       ...
-     }
+     import { defineRouting } from 'next-intl/routing';
+
+     export const routing = defineRouting({
+       locales: ['es', 'en', 'it', 'pt'],
+       defaultLocale: 'es'
+     });
      ```
-3. **Root Page Fallback / Redirect**:
-   - A root redirect page `src/app/page.js` using `redirect('/es')` ensures that requests reaching `/` directly (bypassing or prior to proxy execution) are cleanly redirected to the default locale (`/es`).
+   - Defines supported locales (`es`, `en`, `it`, `pt`) with default locale `es`.
+
+3. **Handler Export**:
+   - `export default createMiddleware(routing);`
+   - Evaluates `createMiddleware(routing)` to produce the request processing function and exports it as the default export.
+
+4. **Matcher Configuration**:
+   - `export const config = { matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'] };`
+   - Employs a negative lookahead regular expression to match all incoming request paths except API routes (`/api`), Next.js static assets (`/_next`), Vercel internal routes (`/_vercel`), and static files containing extensions (e.g., `.svg`, `.ico`, `.css`).
 
 ---
 
-## 4. Proposed Fix Strategy for Next Stage (Implementer)
+## 3. Next.js 16 Documentation & Specification Analysis
 
-1. **Rename & Update Middleware to Proxy**:
-   - Rename `src/middleware.js` -> `src/proxy.js`.
-   - Update export to align with Next.js 16 proxy convention (`export function proxy(request)` or `export default createMiddleware(...)`).
-2. **Add Root Fallback Route `src/app/page.js`**:
-   - Create `src/app/page.js` with `redirect('/es')` from `next/navigation`.
-3. **Update `src/app/[locale]/layout.js`**:
-   - Await `params` in `RootLayout` (`const { locale } = await params`).
-4. **Setup Playwright E2E Tests**:
-   - Install `@playwright/test` and configure `playwright.config.js`.
-   - Write tests verifying root redirect `/` -> `/es` and page load of `/es`.
+An inspection of the official Next.js 16 documentation provided in `node_modules/next/dist/docs/` (`01-app/01-getting-started/16-proxy.md` and `01-app/03-api-reference/03-file-conventions/proxy.md`) confirms the following:
+
+### Deprecation and Renaming Notice
+- **Next.js 16 Change**: *"The `middleware` file convention is deprecated and has been renamed to `proxy`."* (Ref: `01-app/03-api-reference/03-file-conventions/proxy.md`, Line 11).
+- **Good to know**: *"Starting with Next.js 16, Middleware is now called Proxy to better reflect its purpose. The functionality remains the same."* (Ref: `01-app/01-getting-started/16-proxy.md`, Line 15).
+
+### File Placement and Uniqueness
+- **Location**: Must be created in project root (`proxy.ts` / `proxy.js`) or inside `src/` (`src/proxy.ts` / `src/proxy.js`).
+- **Single File Constraint**: Next.js 16 enforces that **only one** proxy file is supported per project. Having both `middleware.js` and `proxy.js` co-existing causes a fatal build-time conflict.
+
+### Export Syntax Requirements
+- The file must export a single function, either as a **default export** or named `proxy`.
+  - `export default function proxy(request) { ... }` OR `export default createMiddleware(routing);`
+  - Named export: `export function proxy(request) { ... }`
+- The `config` object containing `matcher` is exported alongside the proxy handler:
+  ```javascript
+  export const config = { matcher: [...] };
+  ```
+
+---
+
+## 4. Conflict & Build Failure Mechanism
+
+1. **Why `npm run build` Fails**:
+   When Next.js 16 scans the project structure during `next build`, it checks for both legacy `middleware.js` and new `proxy.js` entry points. When both `src/middleware.js` and `src/proxy.js` are present, Next.js detects duplicate routing handlers and throws a fatal compilation error, causing `npm run build` to fail with non-zero exit code.
+
+2. **Why Vercel Deployment Failed**:
+   Vercel runs `npm run build` during the deployment pipeline. Because the codebase contained both `src/middleware.js` and `src/proxy.js`, the Vercel build step crashed within seconds.
+
+---
+
+## 5. Recommendations for Resolution
+
+### Action 1: Remove Obsolete File
+- **Delete `src/middleware.js`** completely from the repository (`c:\Users\Edison\Desktop\La Polla\src\middleware.js`).
+
+### Action 2: Retain and Validate `src/proxy.js`
+- Keep `src/proxy.js` as the sole routing file.
+- Verify content in `src/proxy.js`:
+  ```javascript
+  import createMiddleware from 'next-intl/middleware';
+  import { routing } from './i18n/routing';
+
+  export default createMiddleware(routing);
+
+  export const config = {
+    matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+  };
+  ```
+
+### Action 3: Execute Local Build and E2E Tests
+1. **Clean Build**: Run `npm run build` to ensure Next.js compiles without errors and exits with code 0.
+2. **Local Production Server**: Run `npm run start` to serve the production build locally.
+3. **Playwright Suite**: Run `npx playwright test` to verify that locale redirection (`/` -> `/es/` or `/es/login`) and page rendering work as expected.

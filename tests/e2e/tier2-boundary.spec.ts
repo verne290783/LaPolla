@@ -23,7 +23,7 @@ test.describe('Tier 2: Boundary & Form Validation', () => {
 
     // Submit empty form should maintain page (no success state)
     await submitBtn.click();
-    await expect(page.locator('h2')).not.toHaveText('Correo de confirmación enviado');
+    await expect(page.getByText('Correo de confirmación enviado')).not.toBeVisible();
   });
 
   test('LoginForm submission displays success state', async ({ page }) => {

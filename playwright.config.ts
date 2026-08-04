@@ -8,9 +8,10 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html', { open: 'never' }], ['list']],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3005',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    locale: 'es-ES',
   },
   projects: [
     {
@@ -19,9 +20,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run build && npm run start',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    command: 'npx next start -p 3005',
+    url: 'http://localhost:3005',
+    reuseExistingServer: false,
     timeout: 120 * 1000,
   },
 });

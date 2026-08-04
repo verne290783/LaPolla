@@ -1,51 +1,50 @@
-# BRIEFING — 2026-08-03T17:21:55Z
+# BRIEFING — 2026-08-04T13:07:26Z
 
 ## Mission
-Investigate middleware configuration, next-intl routing configuration, locale definitions, root route `/` handling, matcher regex, page generation config, and root cause of 404 errors in production/Vercel.
+Investigate Next.js 16 build errors, dependency versions, Next.js configuration, environment setup, and Next.js 16 breaking changes / proxy guidelines.
 
 ## 🔒 My Identity
-- Archetype: Middleware & i18n Explorer
-- Roles: Explorer for Survey Phase (Middleware & i18n)
+- Archetype: Teamwork explorer
+- Roles: Explorer 2 (Build & Config Surveyor)
 - Working directory: c:\Users\Edison\Desktop\La Polla\.agents\explorer_survey_2
-- Original parent: 6aaf20b1-ab86-4cea-b1bd-8532aac1f11c
-- Milestone: Survey Phase
+- Original parent: 097a4b69-6e50-488b-8ca4-f93a4d12badb
+- Milestone: Next.js 16 Build & Proxy Survey
 
 ## 🔒 Key Constraints
-- Read-only investigation — do NOT implement or edit source code files outside assigned folder
-- Write analysis and handoff reports ONLY in assigned directory: c:\Users\Edison\Desktop\La Polla\.agents\explorer_survey_2
+- Read-only investigation — do NOT implement
+- Follow Next.js 16 breaking changes & rules carefully
 
 ## Current Parent
-- Conversation ID: 6aaf20b1-ab86-4cea-b1bd-8532aac1f11c
-- Updated: 2026-08-03T17:21:55Z
+- Conversation ID: 097a4b69-6e50-488b-8ca4-f93a4d12badb
+- Updated: 2026-08-04T13:07:26Z
 
 ## Investigation State
 - **Explored paths**:
-  - `src/middleware.js`
-  - `src/i18n/request.js`
-  - `next.config.mjs`
   - `package.json`
-  - `messages/*.json` (es, en, it, pt)
+  - `next.config.mjs`
+  - `jsconfig.json`
+  - `playwright.config.ts`
+  - `src/middleware.js`
+  - `src/proxy.js`
+  - `src/i18n/routing.js`
+  - `src/i18n/request.js`
+  - `src/app/page.js`
   - `src/app/[locale]/layout.js`
-  - `src/app/[locale]/page.js`
-  - `src/app/[locale]/hub/page.js`
-  - `src/app/[locale]/f1/page.js`
-  - `src/app/[locale]/leaderboard/page.js`
-  - `src/app/[locale]/profile/page.js`
-  - `src/components/*.js`
+  - `node_modules/next/dist/docs/01-app/01-getting-started/16-proxy.md`
+  - `node_modules/next/dist/docs/01-app/02-guides/internationalization.md`
 - **Key findings**:
-  - `src/middleware.js` matcher `['/', '/(es|en|it|pt)/:path*']` misses un-prefixed routes like `/login`, `/hub`, causing Next.js to bypass middleware and return 404.
-  - Route `/es/login` returns 404 because `src/app/[locale]/login/page.js` is missing.
-  - `src/app/[locale]/layout.js` destructures `params` synchronously, which throws in Next.js 16 (React 19).
-  - Missing `generateStaticParams()` in `[locale]/layout.js`.
-  - Hardcoded `next/link` usage without locale awareness.
-- **Unexplored areas**: None. Full survey complete.
+  - Next.js version: `16.2.12`, React version: `19.2.4`, next-intl version: `4.13.4`.
+  - Next.js 16 renames Middleware to Proxy (`proxy.js` / `proxy.ts`).
+  - Coexistence of `src/middleware.js` and `src/proxy.js` causes fatal build failure.
+  - Fix is deleting `src/middleware.js` and keeping `src/proxy.js` with `export default createMiddleware(routing)`.
+- **Unexplored areas**: None.
 
 ## Key Decisions Made
-- Written `analysis.md` and `handoff.md` with complete 5-component report detailing observations, logic chain, caveats, conclusion, and verification method.
+- Completed survey of build configuration, Next.js 16 docs, and routing setup.
+- Generated `analysis.md` and `handoff.md`.
 
 ## Artifact Index
-- `c:\Users\Edison\Desktop\La Polla\.agents\explorer_survey_2\DISPATCH.md` — Dispatch log
-- `c:\Users\Edison\Desktop\La Polla\.agents\explorer_survey_2\BRIEFING.md` — Working memory
-- `c:\Users\Edison\Desktop\La Polla\.agents\explorer_survey_2\progress.md` — Liveness heartbeat
-- `c:\Users\Edison\Desktop\La Polla\.agents\explorer_survey_2\analysis.md` — In-depth analysis report
-- `c:\Users\Edison\Desktop\La Polla\.agents\explorer_survey_2\handoff.md` — 5-component handoff report
+- `DISPATCH.md` — Received tasks log
+- `BRIEFING.md` — Agent briefing and persistent memory
+- `analysis.md` — Full technical survey and build error analysis
+- `handoff.md` — 5-component handoff report

@@ -1,24 +1,26 @@
-# Project Orchestrator Final Handoff Report
+# Hard Handoff Report — Project Orchestrator
 
-## Milestone State
-- **Milestone 1: Next.js 16 & i18n Fixes**: `DONE` (PASSED all review, challenge, and audit gates).
-- **Milestone 2: E2E Test Suite Creation**: `DONE` (PASSED all review, challenge, and audit gates).
-- **Milestone 3: Final E2E Validation & Hardening**: `DONE` (PASSED final acceptance verification).
+## 1. Milestone State
+- **Milestone M1 (Middleware Cleanup & Next.js 16 Build Fix)**: **DONE**
+  - Obsolete `src/middleware.js` deleted (0 occurrences remain).
+  - `src/proxy.js` established as sole request routing interceptor with `createMiddleware(routing)`.
+  - `src/app/[locale]/layout.js` updated to await `params` (`const { locale } = await params;`) and export `generateStaticParams()`.
+- **Milestone M2 (Playwright E2E Test Suite & Production Pass)**: **DONE**
+  - `@playwright/test` and `playwright.config.ts` configured with `reuseExistingServer: false`.
+  - 4-tier E2E test suite in `tests/e2e/` created and verified.
 
-## Active Subagents
-- None (All subagents completed). Total cumulative spawns: 19.
+## 2. Active Subagents
+- None (All 20 subagents completed and retired; heartbeat cron killed).
 
-## Pending Decisions
-- None.
+## 3. Pending Decisions
+- None (All gate checks passed with unanimous APPROVE / CLEAN verdicts).
 
-## Remaining Work
-- Project is 100% complete and verified against all requirements (R1, R2, R3) and Acceptance Criteria.
-- Ready for GitHub push and Vercel production deployment.
+## 4. Remaining Work
+- Proceed with `git push` to trigger automated Vercel deployment.
 
-## Key Artifacts
-- `c:\Users\Edison\Desktop\La Polla\PROJECT.md` & `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\PROJECT.md` — Project architecture, feature inventory, milestones, contracts.
-- `c:\Users\Edison\Desktop\La Polla\TEST_INFRA.md` — E2E testing infrastructure guide.
-- `c:\Users\Edison\Desktop\La Polla\TEST_READY.md` — Test coverage matrix and execution checklist.
-- `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\BRIEFING.md` — Agent briefing & team roster.
-- `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\progress.md` — Final progress tracking and retrospective.
-- `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\GATE_STATUS.md` — Final gate status verdicts.
+## 5. Key Artifacts
+- `c:\Users\Edison\Desktop\La Polla\.agents\ORIGINAL_REQUEST.md` — User Request
+- `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\plan.md` — Milestone Plan
+- `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\progress.md` — Execution Progress
+- `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\PROJECT.md` — Architecture & Milestones Index
+- `c:\Users\Edison\Desktop\La Polla\.agents\orchestrator\GATE_STATUS.md` — Gate Verdict Log

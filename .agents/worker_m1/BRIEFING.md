@@ -1,61 +1,52 @@
-# BRIEFING — 2026-08-03T22:27:15Z
+# BRIEFING — 2026-08-04T13:10:30Z
 
 ## Mission
-Implement Milestone 1 (Next.js 16 & i18n Fixes) technical tasks according to explorer_m1 analysis.
+Fix Next.js 16 build and routing middleware issue by deleting obsolete middleware.js, verifying proxy.js, ensuring layout.js awaits params, running build, and producing handoff report.
 
 ## 🔒 My Identity
 - Archetype: implementer
 - Roles: implementer, qa, specialist
 - Working directory: c:\Users\Edison\Desktop\La Polla\.agents\worker_m1
-- Original parent: 6aaf20b1-ab86-4cea-b1bd-8532aac1f11c
-- Milestone: Milestone 1 - Next.js 16 & i18n Fixes
+- Original parent: 097a4b69-6e50-488b-8ca4-f93a4d12badb
+- Milestone: M1 - Next.js 16 build fix
 
 ## 🔒 Key Constraints
-- Follow Next.js 16 requirements (`params` as Promise in layouts/pages/route handlers).
-- Update `next-intl` configuration to v4 format (`routing.js`, `navigation.js`, `request.js`).
-- Proxy matcher `['/((?!api|_next|_vercel|.*\\..*).*)']`.
-- Do not cheat, hardcode test results, or create dummy facades.
-- All modifications minimal and genuine.
+- DO NOT CHEAT. Genuine implementation only.
+- Delete `src/middleware.js`.
+- Ensure `src/proxy.js` is sole request interceptor with specified content.
+- Ensure `src/app/[locale]/layout.js` awaits `params`.
+- Execute `npm run build` and verify exit code 0.
 
 ## Current Parent
-- Conversation ID: 6aaf20b1-ab86-4cea-b1bd-8532aac1f11c
-- Updated: 2026-08-03T22:27:15Z
+- Conversation ID: 097a4b69-6e50-488b-8ca4-f93a4d12badb
+- Updated: 2026-08-04T13:10:30Z
 
 ## Task Summary
-- **What to build**: Next.js 16 & next-intl v4 routing fixes, proxy/middleware, layout awaiting params, root redirect, login route, navigation updates.
-- **Success criteria**: Zero build errors (`npm run build`), valid locale routing, static params generated, language selector working.
-- **Interface contracts**: PROJECT.md
-- **Code layout**: PROJECT.md
+- **What to build**: Fix middleware conflict and params awaiting in Next.js 16 app directory layout, verify build.
+- **Success criteria**: Clean build with exit code 0, middleware.js removed, proxy.js verified, params awaited in layout.js.
+- **Interface contracts**: proxy.js export default createMiddleware(routing); layout.js async RootLayout({ children, params }).
+- **Code layout**: Next.js App Router inside `src/`.
 
-## Change Tracker
-- **Files modified**:
-  - `src/i18n/routing.js` (Created)
-  - `src/i18n/navigation.js` (Created)
-  - `src/i18n/request.js` (Updated for next-intl v4 & await requestLocale)
-  - `src/proxy.js` (Created Next.js 16 proxy)
-  - `src/middleware.js` (Updated matcher & routing)
-  - `src/app/page.js` (Created root redirect /es)
-  - `src/app/[locale]/login/page.js` (Created login page route)
-  - `src/app/[locale]/layout.js` (Awaited params & added generateStaticParams)
-  - `src/components/LanguageSelector.js` (Refactored for @/i18n/navigation)
-  - `src/app/[locale]/hub/page.js` (Updated Link import)
-  - `src/app/[locale]/f1/page.js` (Updated Link import)
-  - `src/app/[locale]/leaderboard/page.js` (Updated Link import)
-  - `src/app/[locale]/profile/page.js` (Updated Link import)
-- **Build status**: Complete & verified statically
-- **Pending issues**: None
-
-## Quality Status
-- **Build/test result**: Verified code structure against Next.js 16 and next-intl 4 specifications
-- **Lint status**: Clean
-- **Tests added/modified**: Pending M2 (Playwright E2E suite)
-
-## Loaded Skills
-- None loaded.
+## Key Decisions Made
+- Confirmed `src/proxy.js` matches exact required implementation for `next-intl` under Next.js 16 proxy convention.
+- Confirmed `src/app/[locale]/layout.js` already contains `const { locale } = await params;` and exports `generateStaticParams()`.
+- Identified permission prompt requirement on `run_command` in current interactive environment, preventing direct shell execution of `Remove-Item` and `npm run build` without user UI interaction.
 
 ## Artifact Index
-- c:\Users\Edison\Desktop\La Polla\.agents\worker_m1\DISPATCH.md
-- c:\Users\Edison\Desktop\La Polla\.agents\worker_m1\BRIEFING.md
-- c:\Users\Edison\Desktop\La Polla\.agents\worker_m1\progress.md
-- c:\Users\Edison\Desktop\La Polla\.agents\worker_m1\changes.md
-- c:\Users\Edison\Desktop\La Polla\.agents\worker_m1\handoff.md
+- DISPATCH.md — Assignment instructions
+- BRIEFING.md — Memory briefing
+- progress.md — Heartbeat & progress log
+- handoff.md — 5-component handoff report
+
+## Change Tracker
+- **Files modified**: None (read-only verification of existing code; deletion/build pending parent/user permission approval for terminal commands)
+- **Build status**: Pending shell command execution
+- **Pending issues**: Permission prompt timeout on `run_command` in non-interactive mode for `Remove-Item` and `npm run build`.
+
+## Quality Status
+- **Build/test result**: Pending execution
+- **Lint status**: N/A
+- **Tests added/modified**: None
+
+## Loaded Skills
+- None
