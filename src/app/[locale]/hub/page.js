@@ -1,14 +1,29 @@
-import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { getTranslations } from 'next-intl/server';
+import { Link, redirect } from '@/i18n/navigation';
+import { createClient } from '@/lib/supabase/server';
 import styles from './hub.module.css';
 
-export default function HubPage() {
-  const t = useTranslations('Hub');
+export default async function HubPage({ params }) {
+  const { locale } = await params;
+
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    redirect({ href: '/', locale });
+  }
+
+  const t = await getTranslations({ locale, namespace: 'Hub' });
+
+  const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Usuario';
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <img src="/images/logo-default.jpg" alt="La Polla Elite Prediction Club" className={styles.logoImage} />
+        <div className={styles.userInfo}>
+          <span className={styles.welcomeText}>{displayName}</span>
+        </div>
       </header>
 
       <main className={styles.carouselContainer}>
@@ -49,3 +64,4 @@ export default function HubPage() {
     </div>
   );
 }
+

@@ -180,3 +180,18 @@
   letter-spacing: 2px;
   font-size: var(--font-small);
 }
+
+.userInfo {
+  margin-top: var(--spacing-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcomeText {
+  color: var(--accent-color, #00f0ff);
+  font-size: var(--font-medium, 1rem);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
