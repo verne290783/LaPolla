@@ -31,7 +31,6 @@ export default function LoginForm() {
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.header}>
         <img src="/images/logo-default.jpg" alt="La Polla Elite Prediction Club" className={styles.logoImage} />
-        <p>{t('subtitle')}</p>
       </div>
       
       <button type="button" className={`btn-primary ${styles.googleBtn}`}>
