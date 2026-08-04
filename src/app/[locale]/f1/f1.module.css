@@ -29,6 +29,8 @@
 .logoImage {
   height: 60px;
   object-fit: contain;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
   filter: drop-shadow(0 0 10px var(--accent-glow));
 }
 

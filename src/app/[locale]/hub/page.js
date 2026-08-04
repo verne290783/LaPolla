@@ -8,7 +8,7 @@ export default function HubPage() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <img src="/images/logo-default.png" alt="La Polla Elite Prediction Club" className={styles.logoImage} />
+        <img src="/images/logo-default.jpg" alt="La Polla Elite Prediction Club" className={styles.logoImage} />
       </header>
 
       <main className={styles.carouselContainer}>

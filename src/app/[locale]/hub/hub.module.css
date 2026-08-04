@@ -12,10 +12,12 @@
 
 .logoImage {
   width: 100%;
-  max-width: 280px;
+  max-width: 320px;
   margin: 0 auto;
   display: block;
-  filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.4));
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.2));
 }
 
 .header h1 {

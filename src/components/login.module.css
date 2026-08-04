@@ -3,7 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0a 100%);
+  background-color: #030409;
+  background-image: radial-gradient(circle at top, #070e1d 0%, #000000 70%);
   padding: var(--spacing-md);
 }
 
@@ -100,4 +101,12 @@
   margin-bottom: var(--spacing-md);
   text-shadow: 0 0 20px var(--accent-glow);
 }
-.logoImage { width: 100%; max-width: 250px; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 15px rgba(0,255,255,0.4)); }
+.logoImage {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 10px;
+  display: block;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+  filter: drop-shadow(0 0 10px rgba(0,255,255,0.2));
+}

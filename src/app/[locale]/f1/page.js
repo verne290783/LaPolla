@@ -14,7 +14,7 @@ export default function F1Page() {
       <nav className={styles.navbar}>
         <Link href="/hub" className={styles.backBtn}>← Hub</Link>
         <div className={styles.logoWrapper}>
-           <img src="/images/logo-f1.png" alt="La Polla Racing 1" className={styles.logoImage} />
+           <img src="/images/logo-f1.jpg" alt="La Polla Racing 1" className={styles.logoImage} />
            <p className={styles.slogan}>RACING 1</p>
         </div>
         <div style={{ width: 60 }}></div> {/* Spacer for balance */}
