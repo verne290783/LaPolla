@@ -30,7 +30,7 @@ export default function LoginForm() {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.header}>
-        <h1 className="glow-text">{t('title')}</h1>
+        <img src="/images/logo-default.png" alt="La Polla Elite Prediction Club" className={styles.logoImage} />
         <p>{t('subtitle')}</p>
       </div>
       

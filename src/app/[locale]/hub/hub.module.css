@@ -10,6 +10,14 @@
   margin-bottom: var(--spacing-xl);
 }
 
+.logoImage {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.4));
+}
+
 .header h1 {
   font-size: var(--font-hero);
   letter-spacing: 2px;

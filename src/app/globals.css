@@ -31,13 +31,17 @@
 /* F1 Theme Class */
 .theme-f1 {
   --accent-color: #ff1801;
-  --accent-glow: rgba(255, 24, 1, 0.3);
+  --accent-glow: rgba(255, 24, 1, 0.4);
+  --bg-primary: #120301;
+  --bg-secondary: #220502;
 }
 
 /* Champions Theme Class */
 .theme-champions {
-  --accent-color: #002366;
-  --accent-glow: rgba(0, 35, 102, 0.5);
+  --accent-color: #00f0ff;
+  --accent-glow: rgba(0, 240, 255, 0.4);
+  --bg-primary: #000c24;
+  --bg-secondary: #001a4d;
 }
 
 * {

@@ -13,7 +13,10 @@ export default function F1Page() {
     <div className={`theme-f1 ${styles.container}`}>
       <nav className={styles.navbar}>
         <Link href="/hub" className={styles.backBtn}>← Hub</Link>
-        <h1 className="glow-text">RACING CLUB</h1>
+        <div className={styles.logoWrapper}>
+           <img src="/images/logo-f1.png" alt="La Polla Racing 1" className={styles.logoImage} />
+           <p className={styles.slogan}>RACING 1</p>
+        </div>
         <div style={{ width: 60 }}></div> {/* Spacer for balance */}
       </nav>
 
